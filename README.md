@@ -5,9 +5,9 @@ Using Uniprot API in R
 
 Mira Sohn
 
-As a bioinformatician, I used to encounter analyses that required me to retrieve a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools specialized for bioinformatics developed in R, I came to the conclusion that they don't always provide identical data to Uniprot, even when using Uniprot IDs as input. I assume that such tools retrieve data from [Ensembl](https://useast.ensembl.org/index.html) or [NCBI](https://www.ncbi.nlm.nih.gov/).
+As a bioinformatician, I used to encounter analyses that required me to retrieve a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools specialized for bioinformatics developed in R, I came to the conclusion that protein length data provided by [Ensembl](https://useast.ensembl.org/index.html) or [NCBI](https://www.ncbi.nlm.nih.gov/) is not always identical to that from Uniprot. 
 
-Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access to access the server in terminal or using python. Unfortunately, I needed it in the middle of my R script. Specifically, I had Uniprot IDs of interest for which I wanted to retrieve the corresponding protein size. Here's my recap of how it was solved.
+Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access to access the server in terminal or using python. Unfortunately, I needed it in the middle of my R script. Therefore, I decided to write simple codes connecting to the API in R. Here's my recap of how it was solved.
 
 1. Load libraries
 
