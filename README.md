@@ -9,7 +9,7 @@ As a bioinformatician, I used to encounter analyses that required me to retrieve
 
 Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access to access the server in terminal or using python. Unfortunately, I needed it in the middle of my R script. My solution was to write simple codes connecting to the API in R. Here's the recep.
 
-1. Load libraries
+## 1. Load libraries
 
 This worklow will be taking advantage of [`httr`](https://httr.r-lib.org/index.html).
 
@@ -21,7 +21,7 @@ library(httr)  # main tool
 
 ```
 
-2. Iteratively retrieving data using a function
+## 2. Iteratively retrieving data using a function
 
 I'll be demonstrating how to retrieve one record at a time using the function below:
 
@@ -67,7 +67,11 @@ The key steps were
 - querying data (`GET(search_url)`)
 - retrieving data (`content(response, "text", encoding="UTF-8")`)
 
+### a. Establishing URL
+
 The URL includes info about the destination you're connecting to, your Uniprot IDs of interest, data format to be retrieved, and data field. If you're looking for data about the Uniprot ID `"P21447"`, the URL would be `"https://rest.uniprot.org/uniprotkb/search?query=P21447&format=tsv&fields=accession,length"` where the `query`, `format`, and `fields` indicate Uniprot ID, output format, and data column to be retrieved, respectively. You can manipulate the string to retrieve different data format and fields. Visit [this instruction](https://www.uniprot.org/help/api_queries) for more details.
+
+### b. Querying data
 
 Once querying data, you can check the `response` about your communication went.
 
@@ -96,6 +100,8 @@ $message
 
 You get 200 as a proof of succussful communication. I'll not get into the details. Check the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) provided by the `httr` package.
 
+### c. Retrieving data
+
 If it suceeded (`if (http_status(response)$category == "Success")`), you would be able to extract the content (`content()`). The content returns a string, which can build a tabular data format, since your query was to retrieve tsv (tab-separated values).
 
 ```r
@@ -103,6 +109,8 @@ If it suceeded (`if (http_status(response)$category == "Success")`), you would b
 > content
 [1] "Entry\tLength\nP21447\t1276\n"
 ```
+
+### d. Cleaning retrieved data
 
 If the string is read by the function `read_tsv()` (or using any preferred functions), it would return a data frame as shown below:
 
@@ -133,6 +141,8 @@ Length <- read_tsv(content)$Length
 ```
 
 Afterwards, every pulled length was added to the vector `length.vector`. If your API doesn't respond to a query, an `NA` is added to the `length.vector`.
+
+## 3. In practice
 
 How do I save what's been retrieved? If you're doing it in the middle of your R workflow, you could take advantage of R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as demonstrated below:
 
@@ -181,5 +191,4 @@ You have to ensure that there's no missing values (`NA`) found in the data frame
 
 I found one missing value out of 2795 Uniprot IDs. It was "Q80TK0", which has been merged into "D3YUB6" according to the Uniprot web. You can make a decision about how to impute this missing value, which is out of scope in this demonstration.
 
-
-
+I've created [a demo script](https://github.com/Mira0507/uniprot_api/blob/main/api_demo.Rmd) in R along with [an input file](https://github.com/Mira0507/uniprot_api/blob/main/uniprot_input_demo.txt). Hope they're useful for someone who are interested in this demonstration.
