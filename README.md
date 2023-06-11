@@ -21,7 +21,7 @@ library(httr)  # main tool
 
 ```
 
-2. Build a function to interatively retrieve data
+2. Iteratively retrieving data using a function
 
 I'll be demonstrating how to retrieve one record at a time using the function below:
 
@@ -132,7 +132,54 @@ Instead of having the data frame returned, I directly pulled the column `Length`
 Length <- read_tsv(content)$Length
 ```
 
-Afterwards, every pulled length was added to the vector `length.vector`.
+Afterwards, every pulled length was added to the vector `length.vector`. If your API doesn't respond to a query, an `NA` is added to the `length.vector`.
 
-It's possible that your communication with the API fails due to multiple reasons. Unless the issue is raised by the server being down or etc, 
+How do I save what's been retrieved? If you're doing it in the middle of your R workflow, you could take advantage of R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as demonstrated below:
+
+```r
+
+# Explore your input data frame
+> head(df)
+  Uniprot
+1  Q3UHJ0
+2  P21447
+3  P55096
+4  Q6P542
+5  Q99LR1
+6  Q5SSL4
+
+> nrow(df)
+[1] 50
+
+```
+
+One of the straightforward ways would be to add a column for protein size corresponding to each Uniprot ID using the function `read_protein_size`, as shown here:
+
+```r
+
+# Add a column to save protein length by retrieving data using Uniprot API
+df$Length <- read_protein_size(df$Uniprot)
+
+# Explore your updated data frame
+> head(df)
+# Uniprot Length
+1  Q3UHJ0    959
+2  P21447   1276
+3  P55096    659
+4  Q6P542    837
+5  Q99LR1    398
+6  Q5SSL4    859
+```
+
+You have to ensure that there's no missing values (`NA`) found in the data frame.
+
+```r
+# Count the number of missing values in the `df`
+> sum(is.na(df))
+[1] 0
+```
+
+I found one missing value out of 2795 Uniprot IDs. It was "Q80TK0", which has been merged into "D3YUB6" according to the Uniprot web. You can make a decision about how to impute this missing value, which is out of scope in this demonstration.
+
+
 
