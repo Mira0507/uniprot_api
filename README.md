@@ -7,7 +7,7 @@ Mira Sohn
 
 As a bioinformatician, I used to encounter analyses that required me to retrieve a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools developed to retrieve data from [Ensembl](https://useast.ensembl.org/index.html), [NCBI](https://www.ncbi.nlm.nih.gov/), or even Uniprot in R, I came to the conclusion that the data is different from what I see on the Uniprot web from time to time.
 
-Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access to access the server in terminal or using python. Unfortunately, I needed it in the middle of my R script. My solution was to write simple codes connecting to the API in R. Here's the recep.
+Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using python. Unfortunately, I needed it in the middle of my R script. My solution was to write simple codes connecting to the API in R. Here's the recap.
 
 ## 1. Load libraries
 
@@ -21,9 +21,9 @@ library(httr)  # main tool
 
 ```
 
-## 2. Iteratively retrieving data using a function
+## 2. Iteratively retrieve data using a function
 
-I'll be demonstrating how to retrieve one record at a time using the function below:
+I wrote a function to retrieve one record at a time here:
 
 ```r
 
