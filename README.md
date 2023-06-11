@@ -74,7 +74,7 @@ The URL includes info about what API you're connecting to, your Uniprot IDs of i
 
 ### b. Querying data
 
-Once querying data, you can check the `response` about your communication went.
+Once querying data, you can check the `response` about how your communication went.
 
 ```r
 
@@ -99,11 +99,11 @@ $message
 
 ```
 
-You get 200 as a proof of succussful communication. I'll not get into the details. Check the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) provided by the `httr` package.
+You get 200 as a proof of succussful communication. Check the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) of the `httr` package for more info.
 
 ### c. Retrieving data
 
-If it suceeded (`if (http_status(response)$category == "Success")`), you would be able to extract the content (`content()`). The content returns a string, which can build a tabular data format, since your query was to retrieve tsv (tab-separated values).
+If your communication suceeded (`if (http_status(response)$category == "Success")`), you can extract the content (`content()`). The content returns a string, which can build a tabular format, since set your format to `tsv` (tab-separated values).
 
 ```r
 # Print the `content`
@@ -113,7 +113,7 @@ If it suceeded (`if (http_status(response)$category == "Success")`), you would b
 
 ### d. Cleaning retrieved data
 
-If the string is read by the function `read_tsv()` (or using any preferred functions), it would return a data frame as shown below:
+You can convert the string to a data frame using the function `read_tsv()` (or using any other preferred functions), as shown below:
 
 ```r
 # Read the `content`
@@ -133,19 +133,19 @@ dbl (1): Length
 
 ```
 
-Instead of having the data frame returned, I directly pulled the column `Length`.
+Instead of building a data frame, I directly pulled the column `Length`, as demonstrated here:
 
 
 ```r
-# Save length as a numeric variable by pulling the column `Length`
+# Save length as a numeric vector by pulling the column `Length`
 Length <- read_tsv(content)$Length
 ```
 
-Afterwards, every pulled length was added to the vector `length.vector`. If your API doesn't respond to a query, an `NA` is added to the `length.vector`.
+Afterwards, every pulled length was added to the vector `length.vector`. If your API doesn't respond to a query, an `NA` is returned and added to the `length.vector`.
 
 ## 3. In practice
 
-How do I save what's been retrieved? If you're doing it in the middle of your R workflow, you could take advantage of R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as demonstrated below:
+How do take advantage of this in real world analysis? One straightforward way would be to use R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
 
 ```r
 
@@ -164,7 +164,7 @@ How do I save what's been retrieved? If you're doing it in the middle of your R 
 
 ```
 
-One of the straightforward ways would be to add a column for protein size corresponding to each Uniprot ID using the function `read_protein_size`, as shown here:
+The function `read_protein_size()` returning a numeric vector for protein length could be used to add a new column for protein size corresponding to each Uniprot.
 
 ```r
 
@@ -182,7 +182,7 @@ df$Length <- read_protein_size(df$Uniprot)
 6  Q5SSL4    859
 ```
 
-You have to ensure that there's no missing values (`NA`) found in the data frame.
+Note that it's possible to get missing values (`NA`s) in the data frame due to failed API communications.
 
 ```r
 # Count the number of missing values in the `df`
@@ -190,6 +190,6 @@ You have to ensure that there's no missing values (`NA`) found in the data frame
 [1] 0
 ```
 
-I found one missing value out of 2795 Uniprot IDs. It was "Q80TK0", which has been merged into "D3YUB6" according to the Uniprot web. You can make a decision about how to impute this missing value, which is out of scope in this demonstration.
+My analysis resulted in finding one missing value out of 2795 Uniprot IDs. It was "Q80TK0", which has been merged into "D3YUB6" according to the Uniprot. You can make a decision about how to impute this missing value, which is out of scope in this demonstration.
 
 I've created [a demo script](https://github.com/Mira0507/uniprot_api/blob/main/api_demo.Rmd) in R along with [an input file](https://github.com/Mira0507/uniprot_api/blob/main/uniprot_input_demo.txt). Hope they're useful for someone who are interested in this demonstration.
