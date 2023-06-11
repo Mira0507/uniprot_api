@@ -1,0 +1,117 @@
+---
+title: "Utilization of Uniprot API in R"
+output:
+    html_document:
+        code_folding: hide
+        toc: true
+        toc_float: true
+        toc_depth: 3
+        df_print: paged
+---
+
+```{r options}
+knitr::opts_chunk$set(warning=FALSE,
+                      message=FALSE)
+```
+
+
+
+```{r load_packages}
+library(tidyverse)
+library(httr)
+
+```
+
+```{r config}
+
+# Assign path to input Uniprot IDs
+uni.input <- "uniprot_input_demo.txt"
+
+# Assign path to output table
+out.file <- "protein_length_table.txt"
+```
+
+```{r read_txt}
+
+# Read Uniprot IDs in a data frame
+df <- read.table(uni.input, sep="\t", header=FALSE)
+
+# Rename the column
+colnames(df) <- "Uniprot"
+
+# > head(df)
+  # Uniprot
+# 1  Q3UHJ0
+# 2  P21447
+# 3  P55096
+# 4  Q6P542
+# 5  Q99LR1
+# 6  Q5SSL4
+
+# > nrow(df)
+# [1] 50
+
+
+# Create a function to retreive protein length for a uniprot ID via Uniprot API
+read_protein_size <- function(id.vector) { 
+    
+    length.vector <- c()
+    for (id in id.vector) {
+        print(paste(id, "being retrieved..."))
+        # Assign URL
+        search_url <- paste0("https://rest.uniprot.org/uniprotkb/search?query=",
+                             id,
+                             "&format=tsv&fields=accession,length")
+        # Send a GET request to the API
+        response <- GET(search_url)
+
+        # Check if the request was successful
+        if (http_status(response)$category == "Success") {
+            # Parse the response body
+            content <- content(response, "text", encoding = "UTF-8")
+
+            # Read the TSV data into a data frame
+            Length <- read_tsv(content)$Length
+
+            # Print the protein length
+            print(paste("The length of the protein with UniProt ID", id, "is", Length, "amino acids."))
+        } else {
+            print("Failed to retrieve data")
+            Length <- NA
+        }
+        length.vector <- c(length.vector, Length)
+    }
+    return(length.vector)
+}
+
+# Add a column containing retreived protein length
+df$Length <- read_protein_size(df$Uniprot)
+
+# > head(df)
+  # Uniprot Length
+# 1  Q3UHJ0    959
+# 2  P21447   1276
+# 3  P55096    659
+# 4  Q6P542    837
+# 5  Q99LR1    398
+# 6  Q5SSL4    859
+
+# > sum(is.na(df))
+# [1] 0
+
+write.table(df,
+            file=out.file,
+            sep='\t',
+            quote=FALSE,
+            row.names=FALSE,
+            col.names=TRUE)
+
+
+```
+
+# Session info
+
+```{r session_info}
+sessionInfo()
+```
+
