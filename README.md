@@ -5,13 +5,13 @@ Using Uniprot API in R
 
 Mira Sohn
 
-As a bioinformatician, I used to encounter analyses that required me to retrieve a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools developed to retrieve data from [Ensembl](https://useast.ensembl.org/index.html), [NCBI](https://www.ncbi.nlm.nih.gov/), or even Uniprot in R, I came to the conclusion that the data is different from what I see on the Uniprot web from time to time.
+As a bioinformatician, I used to encounter analyses requiring a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools developed to retrieve data from [Ensembl](https://useast.ensembl.org/index.html), [NCBI](https://www.ncbi.nlm.nih.gov/), or Uniprot in R, I noticed that the data was not exactly the same as what is currently provided on the Uniprot webpages depending on protein. 
 
-Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using python. Unfortunately, I needed it in the middle of my R script. My solution was to write simple codes connecting to the API in R. Here's the recap.
+Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using python. Unfortunately, my analysis was performed in R script. Instead of going back and forth to do that in terminal or python, I wrote simple codes connecting to the API in R. Here's what I did.
 
 ## 1. Load libraries
 
-This worklow will be taking advantage of [`httr`](https://httr.r-lib.org/index.html).
+This worklow is designed to use the package [`httr`](https://httr.r-lib.org/index.html) in R.
 
 ```r
 
@@ -28,6 +28,7 @@ I wrote a function to retrieve one record at a time here:
 ```r
 
 # Create a function to retreive protein length for a uniprot ID via Uniprot API
+# (Take a character vector consisting of Uniprot IDs as input)
 read_protein_size <- function(id.vector) { 
     
     length.vector <- c()
@@ -69,7 +70,7 @@ The key steps were
 
 ### a. Establishing URL
 
-The URL includes info about the destination you're connecting to, your Uniprot IDs of interest, data format to be retrieved, and data field. If you're looking for data about the Uniprot ID `"P21447"`, the URL would be `"https://rest.uniprot.org/uniprotkb/search?query=P21447&format=tsv&fields=accession,length"` where the `query`, `format`, and `fields` indicate Uniprot ID, output format, and data column to be retrieved, respectively. You can manipulate the string to retrieve different data format and fields. Visit [this instruction](https://www.uniprot.org/help/api_queries) for more details.
+The URL includes info about what API you're connecting to, your Uniprot IDs of interest, data format to be retrieved, and data fields of interest. If you're looking for data about the Uniprot ID `"P21447"`, the URL would be `"https://rest.uniprot.org/uniprotkb/search?query=P21447&format=tsv&fields=accession,length"` where the `query`, `format`, and `fields` indicate Uniprot ID, output format, and data column to be retrieved, respectively. You can manipulate the string to retrieve different data format and fields. Visit [this instruction](https://www.uniprot.org/help/api_queries) for more details.
 
 ### b. Querying data
 
@@ -172,7 +173,7 @@ df$Length <- read_protein_size(df$Uniprot)
 
 # Explore your updated data frame
 > head(df)
-# Uniprot Length
+  Uniprot Length
 1  Q3UHJ0    959
 2  P21447   1276
 3  P55096    659
