@@ -7,7 +7,7 @@ Mira Sohn
 
 As a bioinformatician, I used to encounter analyses that required a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length, in terms of the number of amino acids, for my proteins of interest in R. After trying a couple of conventional tools developed to retrieve data from [Ensembl](https://useast.ensembl.org/index.html), [NCBI](https://www.ncbi.nlm.nih.gov/), or Uniprot in R, I noticed that the data was not exactly the same as what is currently provided on the UniProt webpages for certain proteins. 
 
-Alternatively, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using Python. Unfortunately, my analysis was performed in an R script. Instead of going back and forth to use the terminal or Python, I wrote simple code to connect to the API in R. Here's what I did.
+Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using Python. Unfortunately, my analysis was performed in an R script. Instead of going back and forth to use the terminal or Python, I wrote simple code to connect to the API in R. Here's what I did.
 
 ## 1. Load libraries
 
@@ -100,7 +100,7 @@ $message
 ```
 
 
-You will receive a "200" status code as proof of successful communication. For more information, refer to the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) of the httr package.
+You will receive a "200" status code as proof of successful communication. For more information, refer to the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) of the `httr` package.
 
 ### c. Retrieving the data
 
@@ -166,7 +166,7 @@ How can I take advantage of this demonstration in real-world analyses? One strai
 
 ```
 
-The function `read_protein_size()`, , which returns a numeric vector for protein length, could be used to add a new column for protein size corresponding to each Uniprot ID.
+The function `read_protein_size()`, which returns a numeric vector for protein length, could be used to add a new column for protein size corresponding to each Uniprot ID.
 
 ```r
 
