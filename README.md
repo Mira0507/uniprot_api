@@ -146,7 +146,7 @@ Afterwards, every pulled length was added to the vector `length.vector`. If your
 
 ## 3. Uniprot API in practice
 
-How do I take advantage of this in real world analysis? One straightforward way would be to use R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
+How do I take advantage of this demonstration in real world analyses? One straightforward way would be to use R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
 
 ```r
 
