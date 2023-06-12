@@ -146,7 +146,8 @@ Afterwards, every pulled length was added to the vector `length.vector`. If your
 
 ## 3. Uniprot API in practice
 
-How do I take advantage of this demonstration in real world analyses? One straightforward way would be to use R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
+
+How can I take advantage of this demonstration in real-world analyses? One straightforward way would be to use an R data frame. Let's assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
 
 ```r
 
@@ -165,7 +166,7 @@ How do I take advantage of this demonstration in real world analyses? One straig
 
 ```
 
-The function `read_protein_size()` returning a numeric vector for protein length could be used to add a new column for protein size corresponding to each Uniprot.
+The function `read_protein_size()`, , which returns a numeric vector for protein length, could be used to add a new column for protein size corresponding to each Uniprot ID.
 
 ```r
 
@@ -183,7 +184,7 @@ df$Length <- read_protein_size(df$Uniprot)
 6  Q5SSL4    859
 ```
 
-Note that it's possible to get missing values (`NA`s) in the data frame due to failed API communications.
+Note that it's possible to have missing values (`NA`s) in the data frame due to failed API communications.
 
 ```r
 # Count the number of missing values in the `df`
@@ -191,6 +192,6 @@ Note that it's possible to get missing values (`NA`s) in the data frame due to f
 [1] 0
 ```
 
-My analysis resulted in finding one missing value out of 2795 Uniprot IDs. It was "Q80TK0", which has been merged into "D3YUB6" according to the Uniprot. You can make a decision about how to impute this missing value, which is out of scope in this demonstration.
+During my analysis, I encountered one missing value out of 2795 UniProt IDs. The missing value belonged to "Q80TK0", which has been merged into "D3YUB6" according to UniProt. Imputing this missing value is a decision that falls outside the scope of this demonstration, and you can decide how to handle it based on your specific requirements.
 
-I've created [a demo script](https://github.com/Mira0507/uniprot_api/blob/main/api_demo.Rmd) in R along with [an input file](https://github.com/Mira0507/uniprot_api/blob/main/uniprot_input_demo.txt). Hope they're useful for someone who are interested in this demonstration.
+I've created [a demo script](https://github.com/Mira0507/uniprot_api/blob/main/api_demo.Rmd) in R along with [an input file](https://github.com/Mira0507/uniprot_api/blob/main/uniprot_input_demo.txt). Hope they're useful for someone who is interested in this demonstration.
