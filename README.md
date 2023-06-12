@@ -5,13 +5,13 @@ Using Uniprot API in R
 
 Mira Sohn
 
-As a bioinformatician, I used to encounter analyses requiring a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools developed to retrieve data from [Ensembl](https://useast.ensembl.org/index.html), [NCBI](https://www.ncbi.nlm.nih.gov/), or Uniprot in R, I noticed that the data was not exactly the same as what is currently provided on the Uniprot webpages depending on protein. 
+As a bioinformatician, I used to encounter analyses that required a wide variety of protein features based on [Uniprot](https://www.uniprot.org/) IDs. Today, I spent a considerable amount of time figuring out how to retrieve the protein length in terms of the number of amino acids for my proteins of interest in R. After trying a couple of conventional tools developed to retrieve data from [Ensembl](https://useast.ensembl.org/index.html), [NCBI](https://www.ncbi.nlm.nih.gov/), or Uniprot in R, I noticed that the data was not exactly the same as what is currently provided on the UniProt webpages for certain proteins. 
 
-Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using python. Unfortunately, my analysis was performed in R script. Instead of going back and forth to do that in terminal or python, I wrote simple codes connecting to the API in R. Here's what I did.
+Therefore, I decided to take advantage of the [API provided by Uniprot](https://www.uniprot.org/help/api). Uniprot provides intructions on how to access the server in terminal or using python. Unfortunately, my analysis was performed in an R script. Instead of going back and forth to use the terminal or Python, I wrote simple code to connect to the API in R. Here's what I did.
 
 ## 1. Load libraries
 
-This worklow is designed to use the package [`httr`](https://httr.r-lib.org/index.html) in R.
+This worklow is designed to use the [`httr`](https://httr.r-lib.org/index.html) package in R.
 
 ```r
 
@@ -23,7 +23,7 @@ library(httr)  # main tool
 
 ## 2. Iteratively retrieve data using a function
 
-I wrote a function to retrieve one record at a time here:
+I've written a function to retrieve one record at a time here:
 
 ```r
 
@@ -64,15 +64,15 @@ read_protein_size <- function(id.vector) {
 
 The key steps were
 
-- establishing URL (`search_url`)
-- querying data (`GET(search_url)`)
-- retrieving data (`content(response, "text", encoding="UTF-8")`)
+- establishing the URL (`search_url`)
+- querying the data (`GET(search_url)`)
+- retrieving the data (`content(response, "text", encoding="UTF-8")`)
 
-### a. Establishing URL
+### a. Establishing the URL
 
-The URL includes info about what API you're connecting to, your Uniprot IDs of interest, data format to be retrieved, and data fields of interest. If you're looking for data about the Uniprot ID `"P21447"`, the URL would be `"https://rest.uniprot.org/uniprotkb/search?query=P21447&format=tsv&fields=accession,length"` where the `query`, `format`, and `fields` indicate Uniprot ID, output format, and data column to be retrieved, respectively. You can manipulate the string to retrieve different data format and fields. Visit [this instruction](https://www.uniprot.org/help/api_queries) for more details.
+The URL includes information about the API you're connecting to, the Uniprot IDs of interest, the data format to be retrieved, and the data fields of interest. If you're looking for data about the Uniprot ID `"P21447"`, the URL would be `"https://rest.uniprot.org/uniprotkb/search?query=P21447&format=tsv&fields=accession,length"`. In this URL, the `query` parameter specifies the UniProt ID, the `format` parameter specifies the output format, and the `fields` parameter indicates the data column to be retrieved. You can manipulate the string to retrieve data in different formats and fields. For more details, you can visit the provided [instruction](https://www.uniprot.org/help/api_queries).
 
-### b. Querying data
+### b. Querying the data
 
 Once querying data, you can check the `response` about how your communication went.
 
@@ -101,7 +101,7 @@ $message
 
 You get 200 as a proof of succussful communication. Check the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) of the `httr` package for more info.
 
-### c. Retrieving data
+### c. Retrieving the data
 
 If your communication suceeded (`if (http_status(response)$category == "Success")`), you can extract the content (`content()`). The content returns a string, which can build a tabular format, since set your format to `tsv` (tab-separated values).
 
@@ -111,7 +111,7 @@ If your communication suceeded (`if (http_status(response)$category == "Success"
 [1] "Entry\tLength\nP21447\t1276\n"
 ```
 
-### d. Cleaning retrieved data
+### d. Data cleaning
 
 You can convert the string to a data frame using the function `read_tsv()` (or using any other preferred functions), as shown below:
 
