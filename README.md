@@ -74,7 +74,7 @@ The URL includes information about the API you're connecting to, the Uniprot IDs
 
 ### b. Querying the data
 
-Once querying data, you can check the `response` about how your communication went.
+Once you have queried the data, you can check the `response` to see how your communication went.
 
 ```r
 
@@ -99,11 +99,12 @@ $message
 
 ```
 
-You get 200 as a proof of succussful communication. Check the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) of the `httr` package for more info.
+
+You will receive a "200" status code as proof of successful communication. For more information, refer to the ["Quickstart guide"](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html) of the httr package.
 
 ### c. Retrieving the data
 
-If your communication suceeded (`if (http_status(response)$category == "Success")`), you can extract the content (`content()`). The content returns a string, which can build a tabular format, since set your format to `tsv` (tab-separated values).
+If your communication suceeded (`if (http_status(response)$category == "Success")`), you can extract the content using the `content()` function. The `content()` function returns a string that can be used to build a tabular format, as you have set the format to "tsv" (tab-separated values).
 
 ```r
 # Print the `content`
@@ -113,7 +114,7 @@ If your communication suceeded (`if (http_status(response)$category == "Success"
 
 ### d. Data cleaning
 
-You can convert the string to a data frame using the function `read_tsv()` (or using any other preferred functions), as shown below:
+You can convert the string to a data frame using the function `read_tsv()` (or any other preferred functions, as shown below:
 
 ```r
 # Read the `content`
@@ -133,7 +134,7 @@ dbl (1): Length
 
 ```
 
-Instead of building a data frame, I directly pulled the column `Length`, as demonstrated here:
+Instead of building a data frame, I directly pulled the `"Length"` column, as demonstrated here:
 
 
 ```r
@@ -143,9 +144,9 @@ Length <- read_tsv(content)$Length
 
 Afterwards, every pulled length was added to the vector `length.vector`. If your API doesn't respond to a query, an `NA` is returned and added to the `length.vector`.
 
-## 3. In practice
+## 3. Uniprot API in practice
 
-How do take advantage of this in real world analysis? One straightforward way would be to use R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
+How do I take advantage of this in real world analysis? One straightforward way would be to use R data frame. Assume you have a data frame with a column storing Uniprot IDs of interest, as shown below:
 
 ```r
 
